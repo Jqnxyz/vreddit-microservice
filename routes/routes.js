@@ -1,7 +1,8 @@
-var path = require('path');
-var AWS = require('aws-sdk');
+const s3bucket = 'zluxstore'; //Replace 'zluxstore' with your own
+const path = require('path');
+const AWS = require('aws-sdk');
 const uuidv4 = require('uuid/v4');
-var fs = require('fs');
+const fs = require('fs');
 const s3 = new AWS.S3();
 const { body } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
@@ -10,11 +11,6 @@ var appRouter = function (app) {
 	app.get("/", function(req, res) {
 		res.sendFile(path.join(__dirname + '/../pages/index.html'));
 	});
-
-	//--merge-output-format mp4 "[HREF]" --ffmpeg-location C:/bin/vReddit -f Default+bestaudio -o C:/bin/vReddit/Downloads/%(title)s.%(ext)s
-	
-	//./extract-utils/youtube-dl "https://www.reddit.com/r/Simulated/comments/aelebx/fresh_clean_shave_oc/" -f bestvideo+bestaudio -o "extracts/%(title)s.%(ext)s" --print-json
-	//outputs JSON, grab "_filename", output = "extracts/filename.mp4"
 	app.post("/api/extract", function (req, res) {
 		//get input
 		body('vrurl').not().isEmpty().trim().escape()
@@ -38,7 +34,7 @@ var appRouter = function (app) {
 
 				const body = fs.createReadStream(fileLocation)
 				const params = {
-					Bucket: 'zluxstore',
+					Bucket: s3bucket,
 					Key: jsonOutput.title + "_" + uuidv4() + "." + jsonOutput.ext,
 					Body: body,
 					ACL: 'public-read'
