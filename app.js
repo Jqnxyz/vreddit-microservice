@@ -12,10 +12,6 @@ app.use('/static', express.static(path.join(__dirname + '/public')));
 
 routes(app);
 
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
-
 var server = app.listen(80, function () {
     console.log("Server running on port.", server.address().port);
 });

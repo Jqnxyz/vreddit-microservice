@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>v.reddit Downloader</title>
+		<title>v.redd.it Downloader</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="/static/css/uikit.min.css" />
@@ -10,8 +10,15 @@
 	</head>
 
 	<body>
-		<div class="uk-container">
-			<h1 class="uk-heading-primary">v.reddit downloader</h1>
+		<div class="uk-container uk-container-xsmall">
+			<h1 class="uk-heading-primary uk-padding-large">v.redd.it downloader</h1>
+			<form action="#!">
+				<legend class="uk-legend">Reddit Permalink</legend>
+				<div class="uk-margin">
+					<input class="uk-input" type="text" name="vr-url" id="vr-url" placeholder="https://www.reddit.com/r/Simulated/comments/aelebx/fresh_clean_shave_oc/" required>
+				</div>
+				<button class="uk-button uk-button-primary uk-align-center">DOWNLOAD</button>
+			</form>
 		</div>
 	</body>
 </html>
