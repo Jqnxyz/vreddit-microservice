@@ -1,0 +1,33 @@
+{
+  "name": "vreddit-microservice",
+  "version": "1.0.0",
+  "description": "vreddit downloader website based on nodejs",
+  "main": "app.js",
+  "dependencies": {
+    "aws-sdk": "^2.390.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-validator": "^5.3.1",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jqnxyz/vreddit-microservice.git"
+  },
+  "keywords": [
+    "vreddit",
+    "reddit",
+    "downloader",
+    "website"
+  ],
+  "author": "Jerome Quah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jqnxyz/vreddit-microservice/issues"
+  },
+  "homepage": "https://github.com/jqnxyz/vreddit-microservice#readme"
+}

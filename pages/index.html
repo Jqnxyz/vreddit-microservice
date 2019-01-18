@@ -5,6 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="/static/css/uikit.min.css" />
+		<script src="/static/js/jquery-3.3.1.min.js"></script>
 		<script src="/static/js/uikit.min.js"></script>
 		<script src="/static/js/uikit-icons.min.js"></script>
 	</head>
@@ -12,13 +13,66 @@
 	<body>
 		<div class="uk-container uk-container-xsmall">
 			<h1 class="uk-heading-primary uk-padding-large">v.redd.it downloader</h1>
-			<form action="#!">
+			<form method="post">
 				<legend class="uk-legend">Reddit Permalink</legend>
 				<div class="uk-margin">
-					<input class="uk-input" type="text" name="vr-url" id="vr-url" placeholder="https://www.reddit.com/r/Simulated/comments/aelebx/fresh_clean_shave_oc/" required>
+					<input class="uk-input" type="text" name="vrurl" id="vrurl" placeholder="https://www.reddit.com/r/Simulated/comments/aelebx/fresh_clean_shave_oc/" required>
 				</div>
-				<button class="uk-button uk-button-primary uk-align-center">DOWNLOAD</button>
+				<button id="submitBtn" class="uk-button uk-button-primary uk-button-large">DOWNLOAD</button>
 			</form>
+			<script>
+				$('#submitBtn').click(function(){
+					openLoadingOutput();
+					$('#submitBtn').attr('disabled', true);
+					$('#vrurl').attr('disabled', true);
+					$.ajax({
+						cache: false,
+						type: "POST",
+						dataType: "json",
+						url: "/api/extract",
+						data: {
+							"vrurl":$('#vrurl').val()
+						},
+					    success: function (data) {
+					    	console.log(data);
+							$('#submitBtn').attr('disabled', false);
+							$('#vrurl').attr('disabled', false);
+
+					    	console.log(data.err);
+							if (!data.err){
+
+								$('#outputTitle').text("Success");
+								$('#outputTitle').html("<a href='"+data.downloadURL+"''>Download "+data.videoName+"</a>");
+							} else {
+								//error
+								$('#outputTitle').text("Error");
+								$('#outputSubtitle').show();
+								$('#outputSubtitle').addClass("uk-animation-fade");
+								$('#outputSubtitle').text(data.errMsg);
+							}
+
+					    },
+					    error: function (xhr, ajaxOptions, thrownError) {
+					    	console.log("Error: "+thrownError);
+					    }
+					});
+				});
+
+				function openLoadingOutput() {
+					//Reset subtitle
+					$('#outputSubtitle').hide();
+					$('#outputSubtitle').removeClass("uk-animation-fade");
+					//spinner
+					$('#outputTitle').html("<div uk-spinner></div>");
+					$('#outputBox').show();
+					$('#outputBox').addClass("uk-animation-fade");
+				}
+			</script>
+			<br>
+			<div id="outputBox" class="uk-card uk-card-secondary uk-card-body uk-width-1-2@m uk-align-center" style="display:none">
+			    <h3 id="outputTitle" class="uk-card-title" style="text-align: center;"><div uk-spinner></div></h3>
+			    <p id="outputSubtitle" style="display:none"></p>
+			</div>
 		</div>
 	</body>
 </html>
