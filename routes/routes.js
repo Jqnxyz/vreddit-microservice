@@ -17,17 +17,16 @@ var appRouter = function (app) {
 		const redditPermalink = req.body.vrurl;
 		
 		if (redditPermalink !== ""){
-			console.log(redditPermalink);
-
+			console.log("Request: "+redditPermalink);
 			const { exec } = require('child_process');
 			exec('./extract-utils/youtube-dl "'+redditPermalink+'" -f bestvideo+bestaudio -o "extracts/%(title)s.%(ext)s" --print-json', (err, stdout, stderr) => {
 				if (err) {
-					var errMsg = "Extraction Error";
+					console.log("Exec Error");
+					var errMsg = "Unable to parse content";
 					var outputObj = {"err":true, "errMsg":errMsg ,"videoName":null ,"fileName":null, "downloadURL":null};
-					res.status(200).json(JSON.stringify(outputObj));
+					res.status(200).json(outputObj);
 					return;
 				}
-
 				const jsonOutput = JSON.parse(stdout);
 				const fileLocation = jsonOutput._filename;
 				console.log("Created: " + jsonOutput._filename);
