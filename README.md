@@ -6,7 +6,6 @@ vreddit-microservice is a website built on NodeJS to offer a method of downloadi
 
   - Audio support
   - RESTful API
-  - Magic
   - AWS S3
 
 ### Acknowledgements
