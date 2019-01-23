@@ -28,13 +28,33 @@ var appRouter = function (app) {
 					return;
 				}
 				const jsonOutput = JSON.parse(stdout);
-				const fileLocation = jsonOutput._filename;
+				var fileLocation = jsonOutput._filename;
 				console.log("Created: " + jsonOutput._filename);
+				//console.log(jsonOutput);
+
+				//mux ext
+				var muxExt = jsonOutput.ext;
+
+				//Youtube mp4a 
+				if (jsonOutput.acodec == "mp4a.40.2" && jsonOutput.extractor == "youtube"){
+					console.log("Special: extractor = YouTube + acodec = mp4a.40.2 => muxExt = mkv");
+					muxExt = "mkv";
+
+					fileLocation = fileLocation.substring(0, fileLocation.length-jsonOutput.ext.length) + muxExt;
+				}
+
+				//Youtube opus 
+				if (jsonOutput.acodec == "opus" && jsonOutput.extractor == "youtube"){
+					console.log("Special: extractor = YouTube + acodec = opus => muxExt = mkv");
+					muxExt = "mkv";
+
+					fileLocation = fileLocation.substring(0, fileLocation.length-jsonOutput.ext.length) + muxExt;
+				}
 
 				const body = fs.createReadStream(fileLocation)
 				const params = {
 					Bucket: s3bucket,
-					Key: jsonOutput.title + "_" + uuidv4() + "." + jsonOutput.ext,
+					Key: jsonOutput.title + "_" + uuidv4() + "." + muxExt,
 					Body: body,
 					ACL: 'public-read'
 				};
